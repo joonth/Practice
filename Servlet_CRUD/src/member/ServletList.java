@@ -33,6 +33,7 @@ public class ServletList extends HttpServlet {
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<html><head></head><body>");
+			out.println("<a href='Update'>[회원추가]</a><br>");
 			while(rs.next()) {
 				out.println(rs.getInt("mno")+","+rs.getString("mname")+","+rs.getString("email")+","+rs.getDate("cre_date")+"<br>");
 			}
