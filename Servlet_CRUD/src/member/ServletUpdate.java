@@ -14,44 +14,53 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 @WebServlet("/Update")
 public class ServletUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-  
+   
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("<html><head></head><body><h1>회원추가</h1>");
-		out.println("<form action='Update' method='post'>");
-		out.println("이름 : <input type='text' name='mname'><br>");
-		out.println("비밀번호 : <input type='password' name='pwd'><br>");
-		out.println("이메일 : <input type='text' name='email'><br>");
-		out.println("<input type='submit' value='추가' >");
-		out.println("<input type='button' value='취소' onclick='location.href=\"List\"' >");
-		out.println("</form></body></html>");
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = null;
 		Statement stmt = null;
-		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
 		try {
 			DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "*****", "*****");
 			stmt = conn.createStatement();
-			request.setCharacterEncoding("UTF-8");
-			rs = stmt.executeQuery("select mno from members order by mno desc");
+			rs = stmt.executeQuery("select  mname,email,cre_date from members where mno="+request.getParameter("mno"));
 			rs.next();
-			int lastMno = rs.getInt("mno");
-			
-			pstmt = conn.prepareStatement("insert into members (mno,mname,pwd,email,cre_date,mod_date) values (?,?,?,?,sysdate,sysdate)");
-			pstmt.setInt(1, lastMno);
-			pstmt.setString(2, request.getParameter("mname"));
-			pstmt.setString(3, request.getParameter("pwd"));
-			pstmt.setString(4, request.getParameter("email"));
+			out.println("<html><head></head><body>");
+			out.println("<form action='Update' method='post' >");
+			out.println("회원번호 : <input type='text' name='mno' value='"+request.getParameter("mno")+"' readonly><br>");
+			out.println("회원이름 : <input type='text' name='mname' value='"+rs.getString("mname")+"'><br>");
+			out.println("이메일 : <input type='text' name='email' value='"+rs.getString("email")+"'><br>");
+			out.println("가입일 : <input type='text' name='cre_date' value='"+rs.getString("cre_date")+"' readonly><br>");
+			out.println("<input type='submit' value='수정' >");
+			out.println("<input type='button' value='취소' onclick='location.href=\"List\"'>");
+			out.println("</form></body></html>");
+		}catch(Exception e) {
+			throw new ServletException(e);
+		}finally {
+			try {if(rs != null) rs.close();}catch(Exception e) {}
+			try {if(stmt != null) stmt.close();}catch(Exception e) {}
+			try {if(conn != null) conn.close();}catch(Exception e) {}
+		}
+	}
+
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		request.setCharacterEncoding("UTF-8");
+		try {
+			DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "*****", "*****");
+			pstmt = conn.prepareStatement("update members set mname = ? , email = ? , mod_date = sysdate where mno="+request.getParameter("mno"));
+			pstmt.setString(1, request.getParameter("mname"));
+			pstmt.setString(2, request.getParameter("email"));
 			pstmt.executeQuery();
 			response.sendRedirect("List");
 		}catch(Exception e) {
@@ -59,9 +68,9 @@ public class ServletUpdate extends HttpServlet {
 		}finally {
 			try {if(rs != null) rs.close();}catch(Exception e) {}
 			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
-			try {if(stmt != null) stmt.close();}catch(Exception e) {}
 			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
-
 }
+
+
