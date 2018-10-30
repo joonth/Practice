@@ -38,7 +38,7 @@ public class ServletList extends HttpServlet {
 				out.println(rs.getInt("mno")+","
 								+"<a href='Update?mno="+rs.getInt("mno")+"'>"+rs.getString("mname")+"</a>,"
 								+rs.getString("email")+","
-								+rs.getDate("cre_date")+"<br>");
+								+rs.getDate("cre_date")+"<a href='Delete?mno="+rs.getInt("mno")+"'>[삭제]</a><br>");
 			}
 			out.println("</body></html>");
 		}catch(Exception e) {

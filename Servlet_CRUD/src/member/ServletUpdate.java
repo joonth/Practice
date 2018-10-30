@@ -39,6 +39,7 @@ public class ServletUpdate extends HttpServlet {
 			out.println("가입일 : <input type='text' name='cre_date' value='"+rs.getString("cre_date")+"' readonly><br>");
 			out.println("<input type='submit' value='수정' >");
 			out.println("<input type='button' value='취소' onclick='location.href=\"List\"'>");
+			out.println("<input type='button' value='삭제' onclick='location.href=\"Delete?mno="+request.getParameter("mno")+"\"'> ");
 			out.println("</form></body></html>");
 		}catch(Exception e) {
 			throw new ServletException(e);
