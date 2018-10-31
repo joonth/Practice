@@ -40,7 +40,6 @@ public class ServletDelete extends HttpServlet {
 			try {if(rs!=null)rs.close();}catch(Exception e) {}
 			try {if(stmt!=null)stmt.close();}catch(Exception e) {}
 			try {if(stmt1!=null)stmt1.close();}catch(Exception e) {}
-			try {if(conn!=null)conn.close();}catch(Exception e) {}
 		}
 	}
 

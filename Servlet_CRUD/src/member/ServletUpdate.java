@@ -24,7 +24,6 @@ public class ServletUpdate extends HttpServlet {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		try {
 			ServletContext sc = this.getServletContext();
@@ -47,7 +46,6 @@ public class ServletUpdate extends HttpServlet {
 		}finally {
 			try {if(rs != null) rs.close();}catch(Exception e) {}
 			try {if(stmt != null) stmt.close();}catch(Exception e) {}
-			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
 
@@ -56,7 +54,6 @@ public class ServletUpdate extends HttpServlet {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		request.setCharacterEncoding("UTF-8");
 		try {
 			ServletContext sc = this.getServletContext();
 			conn = (Connection) sc.getAttribute("conn");
@@ -70,7 +67,6 @@ public class ServletUpdate extends HttpServlet {
 		}finally {
 			try {if(rs != null) rs.close();}catch(Exception e) {}
 			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
-			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
 }

@@ -21,7 +21,6 @@ public class ServletAdd extends HttpServlet {
        
   
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println("<html><head></head><body><h1>회원추가</h1>");
 		out.println("<form action='Add' method='post'>");
@@ -43,7 +42,6 @@ public class ServletAdd extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 			conn = (Connection) sc.getAttribute("conn");
 			stmt = conn.createStatement();
-			request.setCharacterEncoding("UTF-8");
 			rs = stmt.executeQuery("select mno from members order by mno desc");
 			rs.next();
 			int lastMno = rs.getInt("mno")+1;
@@ -61,7 +59,6 @@ public class ServletAdd extends HttpServlet {
 			try {if(rs != null) rs.close();}catch(Exception e) {}
 			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
 			try {if(stmt != null) stmt.close();}catch(Exception e) {}
-			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
 

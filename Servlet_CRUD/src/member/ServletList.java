@@ -31,7 +31,6 @@ public class ServletList extends HttpServlet {
 			pstmt = conn.prepareStatement("select mno,mname,email,cre_date from members order by mno asc");
 			pstmt.executeQuery();
 			rs = pstmt.getResultSet();
-			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<html><head></head><body>");
 			out.println("<a href='Add'>[회원추가]</a><br>");
@@ -47,7 +46,6 @@ public class ServletList extends HttpServlet {
 		}finally {
 			try {if(rs != null) rs.close();}catch(Exception e) {}
 			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
-			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
 
