@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,15 +22,16 @@ public class ServletDelete extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = null;
 		Statement stmt = null;
+		Statement stmt1 = null;
 		ResultSet rs = null;
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "*****", "*****");
+			ServletContext sc = this.getServletContext();
+			conn = (Connection)sc.getAttribute("conn");
 			stmt = conn.createStatement();
 			stmt.executeQuery("delete members where mno="+request.getParameter("mno"));
 			
-			stmt = conn.createStatement();
-			stmt.executeQuery("update members set mno=mno-1 where mno >"+request.getParameter("mno"));
+			stmt1 = conn.createStatement();
+			stmt1.executeQuery("update members set mno=mno-1 where mno >"+request.getParameter("mno"));
 			
 			response.sendRedirect("List");
 		}catch(Exception e) {
@@ -37,6 +39,7 @@ public class ServletDelete extends HttpServlet {
 		}finally {
 			try {if(rs!=null)rs.close();}catch(Exception e) {}
 			try {if(stmt!=null)stmt.close();}catch(Exception e) {}
+			try {if(stmt1!=null)stmt1.close();}catch(Exception e) {}
 			try {if(conn!=null)conn.close();}catch(Exception e) {}
 		}
 	}

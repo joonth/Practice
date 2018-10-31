@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,8 +40,8 @@ public class ServletAdd extends HttpServlet {
 		ResultSet rs = null;
 		
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "*****", "*****");
+			ServletContext sc = this.getServletContext();
+			conn = (Connection) sc.getAttribute("conn");
 			stmt = conn.createStatement();
 			request.setCharacterEncoding("UTF-8");
 			rs = stmt.executeQuery("select mno from members order by mno desc");

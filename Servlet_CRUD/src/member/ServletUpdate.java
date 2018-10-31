@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,8 +27,8 @@ public class ServletUpdate extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "*****", "*****");
+			ServletContext sc = this.getServletContext();
+			conn = (Connection) sc.getAttribute("conn");
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select  mname,email,cre_date from members where mno="+request.getParameter("mno"));
 			rs.next();
@@ -57,8 +58,8 @@ public class ServletUpdate extends HttpServlet {
 		ResultSet rs = null;
 		request.setCharacterEncoding("UTF-8");
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "*****", "*****");
+			ServletContext sc = this.getServletContext();
+			conn = (Connection) sc.getAttribute("conn");
 			pstmt = conn.prepareStatement("update members set mname = ? , email = ? , mod_date = sysdate where mno="+request.getParameter("mno"));
 			pstmt.setString(1, request.getParameter("mname"));
 			pstmt.setString(2, request.getParameter("email"));

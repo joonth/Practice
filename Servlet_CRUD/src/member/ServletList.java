@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,8 +26,8 @@ public class ServletList extends HttpServlet {
 		ResultSet rs = null;
 		
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "*****", "*****");
+			ServletContext sc = this.getServletContext();
+			conn = (Connection) sc.getAttribute("conn");
 			pstmt = conn.prepareStatement("select mno,mname,email,cre_date from members order by mno asc");
 			pstmt.executeQuery();
 			rs = pstmt.getResultSet();
