@@ -8,12 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import vo.Member;
 
 
 @WebServlet("/Update")
@@ -29,18 +32,16 @@ public class ServletUpdate extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 			conn = (Connection) sc.getAttribute("conn");
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select  mname,email,cre_date from members where mno="+request.getParameter("mno"));
+			rs = stmt.executeQuery("select mno,mname,email,cre_date from members where mno="+request.getParameter("mno"));
 			rs.next();
-			out.println("<html><head></head><body>");
-			out.println("<form action='Update' method='post' >");
-			out.println("회원번호 : <input type='text' name='mno' value='"+request.getParameter("mno")+"' readonly><br>");
-			out.println("회원이름 : <input type='text' name='mname' value='"+rs.getString("mname")+"'><br>");
-			out.println("이메일 : <input type='text' name='email' value='"+rs.getString("email")+"'><br>");
-			out.println("가입일 : <input type='text' name='cre_date' value='"+rs.getString("cre_date")+"' readonly><br>");
-			out.println("<input type='submit' value='수정' >");
-			out.println("<input type='button' value='취소' onclick='location.href=\"List\"'>");
-			out.println("<input type='button' value='삭제' onclick='location.href=\"Delete?mno="+request.getParameter("mno")+"\"'> ");
-			out.println("</form></body></html>");
+			Member member = new Member()
+					.setMno(rs.getInt("mno"))
+					.setMname(rs.getString("mname"))
+					.setEmail(rs.getString("email"))
+					.setCre_date(rs.getDate("cre_date"));
+			request.setAttribute("member", member);
+			RequestDispatcher rd = request.getRequestDispatcher("form/UpdateForm.jsp");
+			rd.forward(request, response);
 		}catch(Exception e) {
 			throw new ServletException(e);
 		}finally {

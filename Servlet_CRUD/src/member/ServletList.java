@@ -6,13 +6,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import vo.Member;
 
 
 @WebServlet("/List")
@@ -29,18 +34,19 @@ public class ServletList extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 			conn = (Connection) sc.getAttribute("conn");
 			pstmt = conn.prepareStatement("select mno,mname,email,cre_date from members order by mno asc");
-			pstmt.executeQuery();
-			rs = pstmt.getResultSet();
-			PrintWriter out = response.getWriter();
-			out.println("<html><head></head><body>");
-			out.println("<a href='Add'>[회원추가]</a><br>");
+			rs = pstmt.executeQuery();
+			List<Member> members = new ArrayList<>();
 			while(rs.next()) {
-				out.println(rs.getInt("mno")+","
-								+"<a href='Update?mno="+rs.getInt("mno")+"'>"+rs.getString("mname")+"</a>,"
-								+rs.getString("email")+","
-								+rs.getDate("cre_date")+"<a href='Delete?mno="+rs.getInt("mno")+"'>[삭제]</a><br>");
+				members.add(new Member()
+						.setMno(rs.getInt("mno"))
+						.setMname(rs.getString("mname"))
+						.setEmail(rs.getString("email"))
+						.setCre_date(rs.getDate("cre_date")));
 			}
-			out.println("</body></html>");
+			request.setAttribute("members", members);
+			RequestDispatcher rd = request.getRequestDispatcher("form/ListForm.jsp");
+			rd.forward(request, response);
+		
 		}catch(Exception e) {
 			throw new ServletException(e);
 		}finally {
@@ -48,10 +54,4 @@ public class ServletList extends HttpServlet {
 			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
 		}
 	}
-
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-	}
-
 }

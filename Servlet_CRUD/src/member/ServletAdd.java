@@ -21,15 +21,7 @@ public class ServletAdd extends HttpServlet {
        
   
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-		out.println("<html><head></head><body><h1>회원추가</h1>");
-		out.println("<form action='Add' method='post'>");
-		out.println("이름 : <input type='text' name='mname'><br>");
-		out.println("비밀번호 : <input type='password' name='pwd'><br>");
-		out.println("이메일 : <input type='text' name='email'><br>");
-		out.println("<input type='submit' value='추가' >");
-		out.println("<input type='button' value='취소' onclick='location.href=\"List\"' >");
-		out.println("</form></body></html>");
+		response.sendRedirect("form/AddForm.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
