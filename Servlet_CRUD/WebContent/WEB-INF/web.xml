@@ -23,20 +23,20 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
   <filter>
-  	<filter-name>CharacterEncodingFilter</filter-name>
-  	<filter-class>filters.CharacterEncodingFilter</filter-class>
-  	<init-param>
-  		<param-name>encoding</param-name>
-  		<param-value>UTF-8</param-value>
-  	</init-param>
-  	<init-param>
-  		<param-name>contentType</param-name>
-  		<param-value>text/html; charset=UTF-8</param-value>
-  	</init-param>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>filters.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>contentType</param-name>
+      <param-value>text/html; charset=UTF-8</param-value>
+    </init-param>
   </filter>
   <filter-mapping>
-  	<filter-name>CharacterEncodingFilter</filter-name>
-  	<url-pattern>/*</url-pattern>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
   </filter-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

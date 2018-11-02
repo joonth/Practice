@@ -28,31 +28,19 @@ public class ServletLogin extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn =(Connection) this.getServletContext().getAttribute("conn"); 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		ServletContext sc =this.getServletContext();
+		Connection conn = (Connection)sc.getAttribute("conn");
+		MemberDao dao = new MemberDao();
+		dao.setConnection(conn);
 		try {
-			pstmt = conn.prepareStatement("select mno,mname,email from members where email=? and pwd=?");
-			pstmt.setString(1, request.getParameter("email"));
-			pstmt.setString(2, request.getParameter("pwd"));
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				Member member=new Member()
-						.setMno(rs.getInt("mno"))
-						.setMname(rs.getString("mname"))
-						.setEmail(rs.getString("email"));
-				HttpSession session = request.getSession();
-				session.setAttribute("member", member);
+			Member member =dao.login(request.getParameter("email"), request.getParameter("pwd"));
+			if(member != null) {
 				response.sendRedirect("List");
 			}else {
 				response.sendRedirect("Login");
 			}
 		}catch(Exception e) {
 			throw new ServletException(e);
-		}finally {
-			try {if(rs !=null) rs.close();}catch(Exception e) {}
-			try {if(pstmt !=null) pstmt.close();}catch(Exception e) {}
-		
 		}
 	}
 
