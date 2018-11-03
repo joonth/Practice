@@ -66,5 +66,29 @@ public class MemberDao {
 		}
 	}
 	
+	public void addMember(Member mem) throws Exception {
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select mno from members order by mno desc");
+			rs.next();
+			int lastNum =rs.getInt("mno")+1;
+			
+			pstmt = conn.prepareStatement("insert into members (mno,mname,email,pwd,cre_date,mod_date) values (?,?,?,?,sysdate,sysdate)");
+			pstmt.setInt(1, lastNum);
+			pstmt.setString(2, mem.getMname());
+			pstmt.setString(3, mem.getEmail());
+			pstmt.setString(4, mem.getPwd());
+			pstmt.executeQuery();
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			try {if(rs != null) rs.close();}catch(Exception e) {}
+			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
+			try {if(stmt != null) stmt.close();}catch(Exception e) {}
+		}
+	}
 	
 }

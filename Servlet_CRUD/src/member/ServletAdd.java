@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.MemberDao;
+import vo.Member;
+
 @WebServlet("/Add")
 public class ServletAdd extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -25,32 +28,19 @@ public class ServletAdd extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = null;
-		Statement stmt = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
+		ServletContext sc = this.getServletContext();
+		Connection conn =(Connection) sc.getAttribute("conn");
+		MemberDao dao = new MemberDao();
+		dao.setConnection(conn);
+		Member member = new Member()
+				.setMname(request.getParameter("mname"))
+				.setEmail(request.getParameter("email"))
+				.setPwd(request.getParameter("pwd"));
 		try {
-			ServletContext sc = this.getServletContext();
-			conn = (Connection) sc.getAttribute("conn");
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select mno from members order by mno desc");
-			rs.next();
-			int lastMno = rs.getInt("mno")+1;
-			
-			pstmt = conn.prepareStatement("insert into members (mno,mname,pwd,email,cre_date,mod_date) values (?,?,?,?,sysdate,sysdate)");
-			pstmt.setInt(1, lastMno);
-			pstmt.setString(2, request.getParameter("mname"));
-			pstmt.setString(3, request.getParameter("pwd"));
-			pstmt.setString(4, request.getParameter("email"));
-			pstmt.executeQuery();
+			dao.addMember(member);
 			response.sendRedirect("List");
 		}catch(Exception e) {
 			throw new ServletException(e);
-		}finally {
-			try {if(rs != null) rs.close();}catch(Exception e) {}
-			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
-			try {if(stmt != null) stmt.close();}catch(Exception e) {}
 		}
 	}
 
