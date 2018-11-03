@@ -112,4 +112,21 @@ public class MemberDao {
 		}
 	}
 	
+	public void updateMember(Member mem) throws Exception {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("update members set mname =? ,email = ? ,mod_date=sysdate where mno=?");
+			pstmt.setString(1, mem.getMname());
+			pstmt.setString(2, mem.getEmail());
+			pstmt.setInt(3, mem.getMno());
+			pstmt.executeQuery();
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			try {if(rs !=null) rs.close();}catch(Exception e) {}
+			try {if(pstmt !=null) pstmt.close();}catch(Exception e) {}
+		}
+	}
+	
 }

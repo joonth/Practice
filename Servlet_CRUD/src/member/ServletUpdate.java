@@ -40,22 +40,19 @@ public class ServletUpdate extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		ServletContext sc = this.getServletContext();
+		Connection conn = (Connection) sc.getAttribute("conn");
+		MemberDao dao = new MemberDao();
+		dao.setConnection(conn);
+		Member member = new Member()
+				.setMname(request.getParameter("mname"))
+				.setEmail(request.getParameter("email"))
+				.setMno(Integer.parseInt(request.getParameter("mno")));
 		try {
-			ServletContext sc = this.getServletContext();
-			conn = (Connection) sc.getAttribute("conn");
-			pstmt = conn.prepareStatement("update members set mname = ? , email = ? , mod_date = sysdate where mno="+request.getParameter("mno"));
-			pstmt.setString(1, request.getParameter("mname"));
-			pstmt.setString(2, request.getParameter("email"));
-			pstmt.executeQuery();
+			dao.updateMember(member);
 			response.sendRedirect("List");
 		}catch(Exception e) {
 			throw new ServletException(e);
-		}finally {
-			try {if(rs != null) rs.close();}catch(Exception e) {}
-			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
 		}
 	}
 }
