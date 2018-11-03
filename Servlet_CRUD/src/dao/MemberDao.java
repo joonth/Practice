@@ -91,4 +91,25 @@ public class MemberDao {
 		}
 	}
 	
+	public Member getMemberInfo (int mno) throws Exception {
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select mno,mname,email,cre_date from members where mno ="+mno);
+			rs.next();
+			Member member = new Member()
+					.setMno(rs.getInt("mno"))
+					.setMname(rs.getString("mname"))
+					.setEmail(rs.getString("email"))
+					.setCre_date(rs.getDate("cre_date"));
+			return member;
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			try {if(rs !=null) rs.close();}catch(Exception e) {}
+			try {if(stmt !=null) stmt.close();}catch(Exception e) {}
+		}
+	}
+	
 }

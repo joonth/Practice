@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.MemberDao;
 import vo.Member;
 
 
@@ -24,29 +25,16 @@ public class ServletUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		PrintWriter out = response.getWriter();
+		ServletContext sc = this.getServletContext();
+		Connection conn = (Connection) sc.getAttribute("conn");
+		MemberDao dao = new MemberDao();
+		dao.setConnection(conn);
 		try {
-			ServletContext sc = this.getServletContext();
-			conn = (Connection) sc.getAttribute("conn");
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select mno,mname,email,cre_date from members where mno="+request.getParameter("mno"));
-			rs.next();
-			Member member = new Member()
-					.setMno(rs.getInt("mno"))
-					.setMname(rs.getString("mname"))
-					.setEmail(rs.getString("email"))
-					.setCre_date(rs.getDate("cre_date"));
-			request.setAttribute("member", member);
+			request.setAttribute("member", dao.getMemberInfo(Integer.parseInt(request.getParameter("mno"))));
 			RequestDispatcher rd = request.getRequestDispatcher("form/UpdateForm.jsp");
 			rd.forward(request, response);
 		}catch(Exception e) {
 			throw new ServletException(e);
-		}finally {
-			try {if(rs != null) rs.close();}catch(Exception e) {}
-			try {if(stmt != null) stmt.close();}catch(Exception e) {}
 		}
 	}
 
