@@ -129,4 +129,23 @@ public class MemberDao {
 		}
 	}
 	
+	public void deleteMember(int mno) throws Exception {
+		Statement stmt = null;
+		Statement stmt1 = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeQuery("delete members where mno="+mno);
+			
+			stmt1 = conn.createStatement();
+			stmt1.executeQuery("update members set mno = mno-1 where mno >"+mno);
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			try {if(rs != null) rs.close();}catch(Exception e) {}
+			try {if(stmt1 != null) stmt1.close();}catch(Exception e) {}
+			try {if(stmt != null) stmt.close();}catch(Exception e) {}
+		}
+	}
+	
 }
