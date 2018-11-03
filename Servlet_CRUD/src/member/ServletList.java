@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.MemberDao;
 import vo.Member;
 
 
@@ -26,32 +27,16 @@ public class ServletList extends HttpServlet {
        
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
+		ServletContext sc = this.getServletContext();
+		Connection conn = (Connection) sc.getAttribute("conn");
+		MemberDao dao = new MemberDao();
+		dao.setConnection(conn);
 		try {
-			ServletContext sc = this.getServletContext();
-			conn = (Connection) sc.getAttribute("conn");
-			pstmt = conn.prepareStatement("select mno,mname,email,cre_date from members order by mno asc");
-			rs = pstmt.executeQuery();
-			List<Member> members = new ArrayList<>();
-			while(rs.next()) {
-				members.add(new Member()
-						.setMno(rs.getInt("mno"))
-						.setMname(rs.getString("mname"))
-						.setEmail(rs.getString("email"))
-						.setCre_date(rs.getDate("cre_date")));
-			}
-			request.setAttribute("members", members);
+			request.setAttribute("members", dao.getList());
 			RequestDispatcher rd = request.getRequestDispatcher("form/ListForm.jsp");
 			rd.forward(request, response);
-		
 		}catch(Exception e) {
 			throw new ServletException(e);
-		}finally {
-			try {if(rs != null) rs.close();}catch(Exception e) {}
-			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
 		}
 	}
 }

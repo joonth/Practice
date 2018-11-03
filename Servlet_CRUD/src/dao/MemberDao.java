@@ -3,6 +3,9 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import vo.Member;
 
@@ -37,6 +40,29 @@ public class MemberDao {
 		}finally {
 			try {if(rs!=null) rs.close();}catch(Exception e) {}
 			try {if(pstmt!=null) pstmt.close();}catch(Exception e) {}
+		}
+	}
+	
+	public List<Member> getList () throws Exception{
+		Statement stmt = null;
+		ResultSet rs =null;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select mno,mname,email,cre_date from members order by mno asc");
+			List<Member> members = new ArrayList<>();
+			while(rs.next()) {
+				members.add(new Member()
+						.setMno(rs.getInt("mno"))
+						.setMname(rs.getString("mname"))
+						.setEmail(rs.getString("email"))
+						.setCre_date(rs.getDate("cre_date")));
+			}
+			return members;
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			try {if(rs!=null) rs.close();}catch(Exception e) {}
+			try {if(stmt!=null) stmt.close();}catch(Exception e) {}
 		}
 	}
 	
