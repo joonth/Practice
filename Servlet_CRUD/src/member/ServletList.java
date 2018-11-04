@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.MemberDao;
 import vo.Member;
@@ -27,16 +28,22 @@ public class ServletList extends HttpServlet {
        
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ServletContext sc = this.getServletContext();
-		Connection conn = (Connection) sc.getAttribute("conn");
-		MemberDao dao = new MemberDao();
-		dao.setConnection(conn);
-		try {
-			request.setAttribute("members", dao.getList());
-			RequestDispatcher rd = request.getRequestDispatcher("form/ListForm.jsp");
-			rd.forward(request, response);
-		}catch(Exception e) {
-			throw new ServletException(e);
+		HttpSession session = request.getSession();
+		Member member =(Member)session.getAttribute("member");
+		if(member != null) {
+			ServletContext sc = this.getServletContext();
+			Connection conn = (Connection) sc.getAttribute("conn");
+			MemberDao dao = new MemberDao();
+			dao.setConnection(conn);
+			try {
+				request.setAttribute("members", dao.getList());
+				RequestDispatcher rd = request.getRequestDispatcher("form/ListForm.jsp");
+				rd.forward(request, response);
+			}catch(Exception e) {
+				throw new ServletException(e);
+			}
+		}else {
+			response.sendRedirect("Login");
 		}
 	}
 }

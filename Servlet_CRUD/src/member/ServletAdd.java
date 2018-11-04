@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.MemberDao;
 import vo.Member;
@@ -24,7 +25,14 @@ public class ServletAdd extends HttpServlet {
        
   
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("form/AddForm.jsp");
+		HttpSession session = request.getSession();
+		Member member =(Member)session.getAttribute("member");
+		if(member != null) {
+			response.sendRedirect("form/AddForm.jsp");			
+		}else {
+			response.sendRedirect("Login");
+		}
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
