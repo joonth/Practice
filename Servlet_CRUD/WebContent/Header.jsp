@@ -2,10 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%
-  Member mem = (Member)request.getSession().getAttribute("member");
-%>
 
 <div style="background-color:#00008b; color:#ffffff; height:20px; padding:5px;">
-	PRACTICE [<%=mem.getMname() %>] <a href='Logout'>[로그아웃]</a>
+	PRACTICE [${member.getMname()}] <a href='Logout'>[로그아웃]</a>
 </div>
