@@ -10,6 +10,7 @@
 </head>
 <% List<Member> members =(List<Member>)request.getAttribute("members"); %>
 <body>
+	<jsp:include page="../Header.jsp"/>
   <h1>회원리스트</h1>
   	<a href=Add>회원추가</a><br>
 	<%for(Member member : members){ %>
@@ -18,5 +19,6 @@
 		<%=member.getEmail() %>,
 		<%=member.getCre_date() %><a href="Delete?mno=<%=member.getMno()%>">[삭제]</a><br>
 	<% }%>
+	<jsp:include page="../Tail.jsp"/>
 </body>
 </html>

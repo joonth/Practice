@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 
 import dao.MemberDao;
 import vo.Member;
@@ -34,6 +34,7 @@ public class ServletLogin extends HttpServlet {
 		try {
 			Member member =dao.login(request.getParameter("email"), request.getParameter("pwd"));
 			if(member != null) {
+				request.getSession().setAttribute("member", member);
 				response.sendRedirect("List");
 			}else {
 				response.sendRedirect("Login");
