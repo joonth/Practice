@@ -37,9 +37,7 @@ public class ServletAdd extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletContext sc = this.getServletContext();
-		Connection conn =(Connection) sc.getAttribute("conn");
-		MemberDao dao = new MemberDao();
-		dao.setConnection(conn);
+		MemberDao dao = (MemberDao)sc.getAttribute("dao");
 		Member member = new Member()
 				.setMname(request.getParameter("mname"))
 				.setEmail(request.getParameter("email"))
@@ -51,5 +49,4 @@ public class ServletAdd extends HttpServlet {
 			throw new ServletException(e);
 		}
 	}
-
 }

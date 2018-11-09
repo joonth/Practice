@@ -27,10 +27,8 @@ public class ServletLogin extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ServletContext sc =this.getServletContext();
-		Connection conn = (Connection)sc.getAttribute("conn");
-		MemberDao dao = new MemberDao();
-		dao.setConnection(conn);
+		ServletContext sc = this.getServletContext();
+		MemberDao dao = (MemberDao)sc.getAttribute("dao");
 		try {
 			Member member =dao.login(request.getParameter("email"), request.getParameter("pwd"));
 			if(member != null) {

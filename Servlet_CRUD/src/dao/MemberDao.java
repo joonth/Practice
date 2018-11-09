@@ -7,20 +7,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.DBConnectionPool;
 import vo.Member;
 
 public class MemberDao {
 		
-	Connection conn = null;
+	DBConnectionPool connPool;
 	
-	public void setConnection(Connection conn) {
-		this.conn = conn;
+	public void setDbConnectionPool (DBConnectionPool connPool) {
+		this.connPool = connPool;
 	}
 	
 	public Member login (String email, String pwd)throws Exception {
+		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
+			conn = connPool.getConnection();
 			pstmt = conn.prepareStatement("select mno, mname, email from members where email=? and pwd=?");
 			pstmt.setString(1, email);
 			pstmt.setString(2, pwd);
@@ -40,13 +43,16 @@ public class MemberDao {
 		}finally {
 			try {if(rs!=null) rs.close();}catch(Exception e) {}
 			try {if(pstmt!=null) pstmt.close();}catch(Exception e) {}
+			if(conn !=null) connPool.returnConnection(conn);
 		}
 	}
 	
 	public List<Member> getList () throws Exception{
+		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs =null;
 		try {
+			conn = connPool.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno,mname,email,cre_date from members order by mno asc");
 			List<Member> members = new ArrayList<>();
@@ -63,14 +69,17 @@ public class MemberDao {
 		}finally {
 			try {if(rs!=null) rs.close();}catch(Exception e) {}
 			try {if(stmt!=null) stmt.close();}catch(Exception e) {}
+			if(conn !=null) connPool.returnConnection(conn);
 		}
 	}
 	
 	public void addMember(Member mem) throws Exception {
+		Connection conn = null;
 		Statement stmt = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
+			conn = connPool.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno from members order by mno desc");
 			rs.next();
@@ -88,13 +97,16 @@ public class MemberDao {
 			try {if(rs != null) rs.close();}catch(Exception e) {}
 			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
 			try {if(stmt != null) stmt.close();}catch(Exception e) {}
+			if(conn != null) connPool.returnConnection(conn);
 		}
 	}
 	
 	public Member getMemberInfo (int mno) throws Exception {
+		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
+			conn = connPool.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno,mname,email,cre_date from members where mno ="+mno);
 			rs.next();
@@ -109,13 +121,16 @@ public class MemberDao {
 		}finally {
 			try {if(rs !=null) rs.close();}catch(Exception e) {}
 			try {if(stmt !=null) stmt.close();}catch(Exception e) {}
+			if(conn != null) connPool.getConnection();
 		}
 	}
 	
 	public void updateMember(Member mem) throws Exception {
+		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
+			conn = connPool.getConnection();
 			pstmt = conn.prepareStatement("update members set mname =? ,email = ? ,mod_date=sysdate where mno=?");
 			pstmt.setString(1, mem.getMname());
 			pstmt.setString(2, mem.getEmail());
@@ -126,14 +141,17 @@ public class MemberDao {
 		}finally {
 			try {if(rs !=null) rs.close();}catch(Exception e) {}
 			try {if(pstmt !=null) pstmt.close();}catch(Exception e) {}
+			if(conn != null) connPool.returnConnection(conn);
 		}
 	}
 	
 	public void deleteMember(int mno) throws Exception {
+		Connection conn = null;
 		Statement stmt = null;
 		Statement stmt1 = null;
 		ResultSet rs = null;
 		try {
+			conn = connPool.getConnection();
 			stmt = conn.createStatement();
 			stmt.executeQuery("delete members where mno="+mno);
 			
@@ -145,6 +163,7 @@ public class MemberDao {
 			try {if(rs != null) rs.close();}catch(Exception e) {}
 			try {if(stmt1 != null) stmt1.close();}catch(Exception e) {}
 			try {if(stmt != null) stmt.close();}catch(Exception e) {}
+			if(conn!= null) connPool.returnConnection(conn);
 		}
 	}
 	

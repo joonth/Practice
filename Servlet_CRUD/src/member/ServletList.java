@@ -32,9 +32,7 @@ public class ServletList extends HttpServlet {
 		Member member =(Member)session.getAttribute("member");
 		if(member != null) {
 			ServletContext sc = this.getServletContext();
-			Connection conn = (Connection) sc.getAttribute("conn");
-			MemberDao dao = new MemberDao();
-			dao.setConnection(conn);
+			MemberDao dao = (MemberDao)sc.getAttribute("dao");
 			try {
 				request.setAttribute("members", dao.getList());
 				RequestDispatcher rd = request.getRequestDispatcher("form/ListForm.jsp");

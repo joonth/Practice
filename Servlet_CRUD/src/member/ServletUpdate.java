@@ -30,9 +30,7 @@ public class ServletUpdate extends HttpServlet {
 		Member member =(Member)session.getAttribute("member");
 		if(member != null) {
 			ServletContext sc = this.getServletContext();
-			Connection conn = (Connection) sc.getAttribute("conn");
-			MemberDao dao = new MemberDao();
-			dao.setConnection(conn);
+			MemberDao dao = (MemberDao)sc.getAttribute("dao");
 			try {
 				request.setAttribute("member", dao.getMemberInfo(Integer.parseInt(request.getParameter("mno"))));
 				RequestDispatcher rd = request.getRequestDispatcher("form/UpdateForm.jsp");
@@ -49,9 +47,7 @@ public class ServletUpdate extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletContext sc = this.getServletContext();
-		Connection conn = (Connection) sc.getAttribute("conn");
-		MemberDao dao = new MemberDao();
-		dao.setConnection(conn);
+		MemberDao dao = (MemberDao)sc.getAttribute("dao");
 		Member member = new Member()
 				.setMname(request.getParameter("mname"))
 				.setEmail(request.getParameter("email"))
