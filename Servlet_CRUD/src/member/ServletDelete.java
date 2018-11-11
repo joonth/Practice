@@ -25,18 +25,18 @@ public class ServletDelete extends HttpServlet {
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Member member =(Member)session.getAttribute("member");
-		if(member != null) {
-			ServletContext sc = this.getServletContext();
+		Member smember =(Member)session.getAttribute("smember");
+		if(smember != null) {
+			ServletContext sc = request.getServletContext();
 			MemberDao dao = (MemberDao)sc.getAttribute("dao");
 			try {
-				dao.deleteMember(Integer.parseInt(request.getParameter("mno")));
-				response.sendRedirect("List");
+				dao.deleteMember(String.valueOf(request.getAttribute("mno")));
+				request.setAttribute("viewUrl", "redirect:List.do");
 			}catch(Exception e) {
-				throw new ServletException(e);
+			throw new ServletException(e);	
 			}
 		}else {
-			response.sendRedirect("Login");
+			request.setAttribute("viewUrl", "redirect:form/LoginForm.jsp");
 		}
 	}
 }

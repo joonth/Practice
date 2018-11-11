@@ -19,7 +19,7 @@
     <a href="Update.do?fmno=${member.mno}">${member.mname}</a>,
     ${member.email},
     ${member.cre_date}
-    <a href="Delete?mno=${member.mno}">[삭제]</a><br>
+    <a href="Delete.do?mno=${member.mno}">[삭제]</a><br>
   </c:forEach>
 	<jsp:include page="../Tail.jsp"/>
 </body>

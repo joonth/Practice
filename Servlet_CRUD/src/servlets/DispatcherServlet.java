@@ -55,6 +55,7 @@ public class DispatcherServlet extends HttpServlet {
 			
 			else if("/Delete.do".equals(servletPath)) {
 				pageControllerPath = "Delete";
+				request.setAttribute("mno", request.getParameter("mno"));
 			}
 			
 			else if("/Login.do".equals(servletPath)) {

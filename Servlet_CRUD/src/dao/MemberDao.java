@@ -145,7 +145,7 @@ public class MemberDao {
 		}
 	}
 	
-	public void deleteMember(int mno) throws Exception {
+	public void deleteMember(String mno) throws Exception {
 		Connection conn = null;
 		Statement stmt = null;
 		Statement stmt1 = null;
