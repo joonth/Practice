@@ -23,30 +23,26 @@ import vo.Member;
 public class ServletAdd extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-  
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Member member =(Member)session.getAttribute("member");
-		if(member != null) {
-			response.sendRedirect("form/AddForm.jsp");			
+		Member smember =(Member)session.getAttribute("smember");
+		if(smember != null) {
+			try {
+				Member member = (Member)request.getAttribute("member");
+				if(member != null) {	
+					ServletContext sc = this.getServletContext();
+					MemberDao dao = (MemberDao)sc.getAttribute("dao");
+					 dao.addMember(member);
+					request.setAttribute("viewUrl", "redirect:List.do");
+				}else {
+					request.setAttribute("viewUrl", "redirect:form/AddForm.jsp");
+				}
+			}catch(Exception e) {
+				throw new ServletException(e);
+			}
 		}else {
-			response.sendRedirect("Login");
-		}
-		
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ServletContext sc = this.getServletContext();
-		MemberDao dao = (MemberDao)sc.getAttribute("dao");
-		Member member = new Member()
-				.setMname(request.getParameter("mname"))
-				.setEmail(request.getParameter("email"))
-				.setPwd(request.getParameter("pwd"));
-		try {
-			dao.addMember(member);
-			response.sendRedirect("List");
-		}catch(Exception e) {
-			throw new ServletException(e);
+			request.setAttribute("viewUrl", "redirect:form/LoginForm.jsp");
 		}
 	}
 }

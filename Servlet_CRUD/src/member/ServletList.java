@@ -29,8 +29,8 @@ public class ServletList extends HttpServlet {
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Member member =(Member)session.getAttribute("member");
-		if(member != null) {
+		Member smember =(Member)session.getAttribute("smember");
+		if(smember != null) {
 			ServletContext sc = this.getServletContext();
 			MemberDao dao = (MemberDao)sc.getAttribute("dao");
 			try {

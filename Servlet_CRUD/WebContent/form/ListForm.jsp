@@ -13,7 +13,7 @@
 <body>
 	<jsp:include page="../Header.jsp"/>
   <h1>회원리스트</h1>
-  <a href=Add>회원추가</a><br>
+  <a href=Add.do>회원추가</a><br>
   <c:forEach var="member" items="${members}">
     ${member.mno},
     <a href="Update?mno=${member.mno}">${member.mname}</a>,

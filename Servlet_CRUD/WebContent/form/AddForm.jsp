@@ -8,7 +8,7 @@
 </head>
 <body>
   <h1>회원추가</h1>
-  <form action="../Add" method="post">
+  <form action="../Add.do" method="post">
     회원이름 : <input type="text" name="mname" ><br>
     이메일 : <input type="text" name="email" ><br>
     비밀번호 : <input type="password" name="pwd" ><br>

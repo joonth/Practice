@@ -27,7 +27,7 @@ public class ServletLogin extends HttpServlet {
 		try {
 			if(request.getAttribute("member") != null) {
 				Member member =dao.login((Member)request.getAttribute("member"));
-				request.getSession().setAttribute("member", member);
+				request.getSession().setAttribute("smember", member);
 				System.out.println("not null");
 				request.setAttribute("viewUrl", "redirect:List.do");
 			}else {
