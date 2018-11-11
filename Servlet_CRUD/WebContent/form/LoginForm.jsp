@@ -8,7 +8,7 @@
 </head>
 <body>
   <h1>Login</h1>
-  <form action="Login" method="post">
+  <form action="../Login.do" method="post">
     이메일 : <input type="text" name="email"><br>
     비밀번호 : <input type="text" name="pwd"><br>
     <input type="submit" value="로그인">

@@ -21,25 +21,21 @@ import vo.Member;
 public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
   
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("form/LoginForm.jsp");
-		rd.forward(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response)throws ServletException,IOException{
 		ServletContext sc = this.getServletContext();
 		MemberDao dao = (MemberDao)sc.getAttribute("dao");
 		try {
-			Member member =dao.login(request.getParameter("email"), request.getParameter("pwd"));
-			if(member != null) {
+			if(request.getAttribute("member") != null) {
+				Member member =dao.login((Member)request.getAttribute("member"));
 				request.getSession().setAttribute("member", member);
-				response.sendRedirect("List");
+				System.out.println("not null");
+				request.setAttribute("viewUrl", "redirect:List.do");
 			}else {
-				response.sendRedirect("Login");
+				System.out.println("null");
+				request.setAttribute("viewUrl", "redirect:form/LoginForm.jsp");
 			}
 		}catch(Exception e) {
 			throw new ServletException(e);
 		}
 	}
-
 }

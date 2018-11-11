@@ -35,13 +35,12 @@ public class ServletList extends HttpServlet {
 			MemberDao dao = (MemberDao)sc.getAttribute("dao");
 			try {
 				request.setAttribute("members", dao.getList());
-				RequestDispatcher rd = request.getRequestDispatcher("form/ListForm.jsp");
-				rd.forward(request, response);
+				request.setAttribute("viewUrl", "form/ListForm.jsp");
 			}catch(Exception e) {
 				throw new ServletException(e);
 			}
 		}else {
-			response.sendRedirect("Login");
+			request.setAttribute("viewUrl", "redirect:form/LoginForm.jsp");
 		}
 	}
 }

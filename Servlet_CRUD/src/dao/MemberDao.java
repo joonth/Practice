@@ -18,15 +18,15 @@ public class MemberDao {
 		this.connPool = connPool;
 	}
 	
-	public Member login (String email, String pwd)throws Exception {
+	public Member login (Member mem)throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			conn = connPool.getConnection();
 			pstmt = conn.prepareStatement("select mno, mname, email from members where email=? and pwd=?");
-			pstmt.setString(1, email);
-			pstmt.setString(2, pwd);
+			pstmt.setString(1, mem.getEmail());
+			pstmt.setString(2, mem.getPwd());
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				Member member= new Member()
