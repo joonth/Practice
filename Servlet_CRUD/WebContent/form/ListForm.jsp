@@ -16,7 +16,7 @@
   <a href=Add.do>회원추가</a><br>
   <c:forEach var="member" items="${members}">
     ${member.mno},
-    <a href="Update?mno=${member.mno}">${member.mname}</a>,
+    <a href="Update.do?fmno=${member.mno}">${member.mname}</a>,
     ${member.email},
     ${member.cre_date}
     <a href="Delete?mno=${member.mno}">[삭제]</a><br>

@@ -39,6 +39,11 @@ public class DispatcherServlet extends HttpServlet {
 			
 			else if("/Update.do".equals(servletPath)) {
 				pageControllerPath = "Update";
+				
+				if(request.getParameter("fmno") != null) {
+					request.setAttribute("mno", request.getParameter("fmno"));					
+				}
+				
 				if(request.getParameter("email") != null) {
 					request.setAttribute("member", new Member()
 							.setMno(Integer.parseInt(request.getParameter("mno")))

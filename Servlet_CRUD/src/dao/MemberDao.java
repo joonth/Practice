@@ -101,7 +101,7 @@ public class MemberDao {
 		}
 	}
 	
-	public Member getMemberInfo (int mno) throws Exception {
+	public Member getMemberInfo (String mno) throws Exception {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
