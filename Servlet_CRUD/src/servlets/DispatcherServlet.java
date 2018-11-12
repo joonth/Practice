@@ -1,14 +1,18 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controls.Controller;
+import controls.MemberListController;
 import vo.Member;
 
 
@@ -19,12 +23,17 @@ public class DispatcherServlet extends HttpServlet {
   
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String servletPath = request.getServletPath();
-		
 		try {
+			ServletContext sc = this.getServletContext();
+			
+			HashMap<String,Object> model = new HashMap<>();
+			model.put("dao", sc.getAttribute("dao"));
+		
+			Controller pageController = null;
 			String pageControllerPath = null;
 			
 			if("/List.do".equals(servletPath)) {
-				pageControllerPath = "List";
+			pageController = new MemberListController();
 			
 			
 			}else if("/Add.do".equals(servletPath)) {
@@ -72,15 +81,17 @@ public class DispatcherServlet extends HttpServlet {
 				pageControllerPath = "Logout";
 			}
 			
-			RequestDispatcher rd = request.getRequestDispatcher(pageControllerPath);
-			rd.include(request, response);
+			String viewUrl = pageController.execute(model);
 			
-			String viewUrl =(String) request.getAttribute("viewUrl");
+			for(String key : model.keySet()) {
+				request.setAttribute(key, model.get(key));
+			}
+		
 			if(viewUrl.startsWith("redirect:")) {
 				response.sendRedirect(viewUrl.substring(9));
 				return;
 			}else {
-				rd = request.getRequestDispatcher(viewUrl);
+				RequestDispatcher rd = request.getRequestDispatcher(viewUrl);
 				rd.include(request, response);
 			}
 			
