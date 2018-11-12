@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controls.Controller;
+import controls.MemberAddController;
 import controls.MemberListController;
 import vo.Member;
 
@@ -37,9 +38,9 @@ public class DispatcherServlet extends HttpServlet {
 			
 			
 			}else if("/Add.do".equals(servletPath)) {
-				pageControllerPath = "Add";
+				pageController = new MemberAddController();
 				if(request.getParameter("email") != null) {
-					request.setAttribute("member", new Member()
+					model.put("member", new Member()
 							.setEmail(request.getParameter("email"))
 							.setPwd(request.getParameter("pwd"))
 							.setMname(request.getParameter("mname")));
