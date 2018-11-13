@@ -10,13 +10,13 @@
 <body>
   <h1>회원정보수정</h1>
   <form action="Update.do" method="post">
-    회원번호 : <input type="text" name="mno" value="${member.getMno()}" readonly><br>
-    회원이름 : <input type="text" name="mname" value="${member.getMname()}"><br>
-    이메일 : <input type="text" name="email" value="${member.getEmail()}"><br>
-    가입일 : <input type="text" name="cre_date" value="${member.getCre_date()}" readonly><br>
+    회원번호 : <input type="text" name="mno" value="${mem.getMno()}" readonly><br>
+    회원이름 : <input type="text" name="mname" value="${mem.getMname()}"><br>
+    이메일 : <input type="text" name="email" value="${mem.getEmail()}"><br>
+    가입일 : <input type="text" name="cre_date" value="${mem.getCre_date()}" readonly><br>
     <input type="submit" value="수정">
     <input type="button" value="취소" onclick="location.href='List.do'">
-    <input type="button" value="삭제" onclick="location.href='Delete.do?mno=${member.getMno()}'">
+    <input type="button" value="삭제" onclick="location.href='Delete.do?mno=${mem.getMno()}'">
   </form>
 </body>
 </html>

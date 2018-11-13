@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import controls.Controller;
 import controls.MemberAddController;
 import controls.MemberListController;
+import controls.MemberUpdateController;
 import vo.Member;
 
 
@@ -26,7 +27,6 @@ public class DispatcherServlet extends HttpServlet {
 		String servletPath = request.getServletPath();
 		try {
 			ServletContext sc = this.getServletContext();
-			
 			HashMap<String,Object> model = new HashMap<>();
 			model.put("dao", sc.getAttribute("dao"));
 		
@@ -48,14 +48,14 @@ public class DispatcherServlet extends HttpServlet {
 			}
 			
 			else if("/Update.do".equals(servletPath)) {
-				pageControllerPath = "Update";
+				pageController = new MemberUpdateController();
 				
 				if(request.getParameter("fmno") != null) {
-					request.setAttribute("mno", request.getParameter("fmno"));					
+					model.put("mno", request.getParameter("fmno"));	
 				}
 				
 				if(request.getParameter("email") != null) {
-					request.setAttribute("member", new Member()
+					model.put("member", new Member()
 							.setMno(Integer.parseInt(request.getParameter("mno")))
 							.setMname(request.getParameter("mname"))
 							.setEmail(request.getParameter("email")));

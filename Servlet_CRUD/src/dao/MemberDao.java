@@ -106,6 +106,7 @@ public class MemberDao {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
+			System.out.println("######"+mno);
 			conn = connPool.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno,mname,email,cre_date from members where mno ="+mno);
