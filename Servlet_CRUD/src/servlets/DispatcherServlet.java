@@ -10,11 +10,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import controls.Controller;
 import controls.MemberAddController;
 import controls.MemberDeleteController;
 import controls.MemberListController;
+import controls.MemberLoginController;
 import controls.MemberUpdateController;
 import vo.Member;
 
@@ -70,13 +72,12 @@ public class DispatcherServlet extends HttpServlet {
 			}
 			
 			else if("/Login.do".equals(servletPath)) {
-				System.out.println("통과");
-				pageControllerPath = "Login";
 				if(request.getParameter("email") !=null) {
-					request.setAttribute("member", new Member()
+					model.put("memberChk", new Member()
 							.setEmail(request.getParameter("email"))
 							.setPwd(request.getParameter("pwd")));
 				}
+				pageController = new MemberLoginController();
 			}
 			
 			else if("/Logout.do".equals(servletPath)) {
@@ -84,6 +85,11 @@ public class DispatcherServlet extends HttpServlet {
 			}
 			
 			String viewUrl = pageController.execute(model);
+			
+			if(model.get("smember") != null) {
+				HttpSession session = request.getSession();
+				session.setAttribute("smember", model.get("smember"));
+			}
 			
 			for(String key : model.keySet()) {
 				request.setAttribute(key, model.get(key));
