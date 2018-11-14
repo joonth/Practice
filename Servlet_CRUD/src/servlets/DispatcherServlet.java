@@ -81,7 +81,9 @@ public class DispatcherServlet extends HttpServlet {
 			}
 			
 			else if("/Logout.do".equals(servletPath)) {
-				pageControllerPath = "Logout";
+				HttpSession session = request.getSession();
+				session.invalidate();
+				pageController = new MemberLoginController();
 			}
 			
 			String viewUrl = pageController.execute(model);
