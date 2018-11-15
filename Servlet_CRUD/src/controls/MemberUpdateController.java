@@ -6,9 +6,14 @@ import dao.MemberDao;
 import vo.Member;
 
 public class MemberUpdateController implements Controller {
+	MemberDao dao;
+	
+	public MemberUpdateController setMemberDao(MemberDao dao) {
+		this.dao = dao;
+		return this;
+	}
 	
 	public String execute (Map<String,Object> model)throws Exception{
-		MemberDao dao =(MemberDao)model.get("dao");
 		if(model.get("member") == null) {
 			model.put("mem",dao.getMemberInfo(String.valueOf(model.get("mno"))));
 			return "form/UpdateForm.jsp";
