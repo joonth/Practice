@@ -31,17 +31,9 @@ public class DispatcherServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			HashMap<String,Object> model = new HashMap<>();
-			model.put("dao", sc.getAttribute("dao"));
-		
-			Controller pageController = null;
-			String pageControllerPath = null;
+			Controller pageController = (Controller) sc.getAttribute(servletPath);
 			
-			if("/List.do".equals(servletPath)) {
-			pageController = new MemberListController();
-			
-			
-			}else if("/Add.do".equals(servletPath)) {
-				pageController = new MemberAddController();
+			if("/Add.do".equals(servletPath)) {
 				if(request.getParameter("email") != null) {
 					model.put("member", new Member()
 							.setEmail(request.getParameter("email"))
@@ -51,12 +43,9 @@ public class DispatcherServlet extends HttpServlet {
 			}
 			
 			else if("/Update.do".equals(servletPath)) {
-				pageController = new MemberUpdateController();
-				
 				if(request.getParameter("fmno") != null) {
 					model.put("mno", request.getParameter("fmno"));	
 				}
-				
 				if(request.getParameter("email") != null) {
 					model.put("member", new Member()
 							.setMno(Integer.parseInt(request.getParameter("mno")))
@@ -67,7 +56,6 @@ public class DispatcherServlet extends HttpServlet {
 			
 			
 			else if("/Delete.do".equals(servletPath)) {
-				pageController = new MemberDeleteController();
 				model.put("mno", request.getParameter("mno"));
 			}
 			
@@ -77,13 +65,10 @@ public class DispatcherServlet extends HttpServlet {
 							.setEmail(request.getParameter("email"))
 							.setPwd(request.getParameter("pwd")));
 				}
-				pageController = new MemberLoginController();
 			}
 			
 			else if("/Logout.do".equals(servletPath)) {
-				HttpSession session = request.getSession();
-				session.invalidate();
-				pageController = new MemberLoginController();
+				model.put("session", request.getSession());
 			}
 			
 			String viewUrl = pageController.execute(model);
