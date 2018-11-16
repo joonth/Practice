@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.MemberDao;
+import dao.OracleMemberDao;
 import vo.Member;
 
 @WebServlet("/Add")
@@ -32,7 +32,7 @@ public class ServletAdd extends HttpServlet {
 				Member member = (Member)request.getAttribute("member");
 				if(member != null) {	
 					ServletContext sc = this.getServletContext();
-					MemberDao dao = (MemberDao)sc.getAttribute("dao");
+					OracleMemberDao dao = (OracleMemberDao)sc.getAttribute("dao");
 					 dao.addMember(member);
 					request.setAttribute("viewUrl", "redirect:List.do");
 				}else {

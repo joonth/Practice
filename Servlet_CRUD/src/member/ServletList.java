@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.MemberDao;
+import dao.OracleMemberDao;
 import vo.Member;
 
 
@@ -32,7 +32,7 @@ public class ServletList extends HttpServlet {
 		Member smember =(Member)session.getAttribute("smember");
 		if(smember != null) {
 			ServletContext sc = this.getServletContext();
-			MemberDao dao = (MemberDao)sc.getAttribute("dao");
+			OracleMemberDao dao = (OracleMemberDao)sc.getAttribute("dao");
 			try {
 				request.setAttribute("members", dao.getList());
 				request.setAttribute("viewUrl", "form/ListForm.jsp");

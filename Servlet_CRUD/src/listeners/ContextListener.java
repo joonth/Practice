@@ -14,7 +14,7 @@ import controls.MemberListController;
 import controls.MemberLoginController;
 import controls.MemberLogoutController;
 import controls.MemberUpdateController;
-import dao.MemberDao;
+import dao.OracleMemberDao;
 import util.DBConnectionPool;
 
 
@@ -30,7 +30,7 @@ public class ContextListener implements javax.servlet.ServletContextListener {
 					sc.getInitParameter("url"),
 					sc.getInitParameter("username"),
 					sc.getInitParameter("password"));
-			MemberDao dao = new MemberDao();
+			OracleMemberDao dao = new OracleMemberDao();
 			dao.setDbConnectionPool(connPool);
 			
 			sc.setAttribute("/Login.do", new MemberLoginController().setMemberDao(dao));

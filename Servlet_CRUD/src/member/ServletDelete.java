@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.MemberDao;
+import dao.OracleMemberDao;
 import vo.Member;
 
 
@@ -28,7 +28,7 @@ public class ServletDelete extends HttpServlet {
 		Member smember =(Member)session.getAttribute("smember");
 		if(smember != null) {
 			ServletContext sc = request.getServletContext();
-			MemberDao dao = (MemberDao)sc.getAttribute("dao");
+			OracleMemberDao dao = (OracleMemberDao)sc.getAttribute("dao");
 			try {
 				dao.deleteMember(String.valueOf(request.getAttribute("mno")));
 				request.setAttribute("viewUrl", "redirect:List.do");

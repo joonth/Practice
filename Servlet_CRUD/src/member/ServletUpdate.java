@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.MemberDao;
+import dao.OracleMemberDao;
 import vo.Member;
 
 
@@ -31,7 +31,7 @@ public class ServletUpdate extends HttpServlet {
 		if(smember != null) {
 			Member member = (Member)request.getAttribute("member");
 			ServletContext sc = request.getServletContext();
-			MemberDao dao = (MemberDao) sc.getAttribute("dao");
+			OracleMemberDao dao = (OracleMemberDao) sc.getAttribute("dao");
 			try {
 				if(member != null) {
 					dao.updateMember(member);

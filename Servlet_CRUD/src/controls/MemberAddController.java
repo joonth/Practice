@@ -2,13 +2,13 @@ package controls;
 
 import java.util.Map;
 
-import dao.MemberDao;
+import dao.OracleMemberDao;
 import vo.Member;
 
 public class MemberAddController implements Controller {
-	MemberDao dao;
+	OracleMemberDao dao;
 	
-	public MemberAddController setMemberDao (MemberDao dao) {
+	public MemberAddController setMemberDao (OracleMemberDao dao) {
 		this.dao = dao;
 		return this;
 	}

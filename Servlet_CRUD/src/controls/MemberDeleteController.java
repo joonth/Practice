@@ -2,12 +2,12 @@ package controls;
 
 import java.util.Map;
 
-import dao.MemberDao;
+import dao.OracleMemberDao;
 
 public class MemberDeleteController implements Controller {
-	MemberDao dao;
+	OracleMemberDao dao;
 	
-	public MemberDeleteController setMemberDao(MemberDao dao) {
+	public MemberDeleteController setMemberDao(OracleMemberDao dao) {
 		this.dao = dao;
 		return this;
 	}
