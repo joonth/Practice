@@ -23,12 +23,16 @@ public class MemberUpdateController implements Controller, DataBinding {
 	
 	public String execute (Map<String,Object> model)throws Exception{
 		Integer mno = (Integer) model.get("mno");
+		System.out.println(mno);
 		Member member = (Member)model.get("member");
-		if(mno != null) {
+		System.out.println(member.getMno() + " " +member.getMname() + " " +member.getEmail() + " " + member.getCre_date());
+		if(mno != null && member.getEmail() == null) {
 			model.put("mem",dao.getMemberInfo(String.valueOf(mno)));
+			System.out.println("11");
 			return "form/UpdateForm.jsp";
 		}else if(member != null) {
 			dao.updateMember(member);
+			System.out.println("22");
 			return "redirect:List.do";
 		}
 		return "redirect:List.do";
