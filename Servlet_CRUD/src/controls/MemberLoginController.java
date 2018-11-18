@@ -2,10 +2,11 @@ package controls;
 
 import java.util.Map;
 
+import bind.DataBinding;
 import dao.OracleMemberDao;
 import vo.Member;
 
-public class MemberLoginController implements Controller {
+public class MemberLoginController implements Controller,DataBinding {
 	OracleMemberDao dao;
 	
 	public MemberLoginController setMemberDao(OracleMemberDao dao) {
@@ -13,13 +14,21 @@ public class MemberLoginController implements Controller {
 		return this;
 	}
 	
+	public Object[] getDataBinders() {
+		return new Object[] {
+			"member" ,vo.Member.class
+		};
+	}
+	
 	public String execute(Map<String,Object> model) throws Exception{
-		if(model.get("memberChk")!=null) {
-			model.put("smember", dao.login((Member)model.get("memberChk")));
+		Member member = (Member) model.get("member");
+		if(member.getEmail()!=null) {
+			model.put("smember", dao.login(member));
 			return "redirect:List.do";			
 		}else {
 			return "redirect:form/LoginForm.jsp";
 		}
 	}
+
 	
 }

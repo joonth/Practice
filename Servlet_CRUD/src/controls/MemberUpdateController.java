@@ -2,10 +2,11 @@ package controls;
 
 import java.util.Map;
 
+import bind.DataBinding;
 import dao.OracleMemberDao;
 import vo.Member;
 
-public class MemberUpdateController implements Controller {
+public class MemberUpdateController implements Controller, DataBinding {
 	OracleMemberDao dao;
 	
 	public MemberUpdateController setMemberDao(OracleMemberDao dao) {
@@ -13,14 +14,24 @@ public class MemberUpdateController implements Controller {
 		return this;
 	}
 	
+	public Object[] getDataBinders() {
+		return new Object[] {
+			"mno",Integer.class,
+			"member",vo.Member.class	
+		};
+	}
+	
 	public String execute (Map<String,Object> model)throws Exception{
-		if(model.get("member") == null) {
-			model.put("mem",dao.getMemberInfo(String.valueOf(model.get("mno"))));
+		Integer mno = (Integer) model.get("mno");
+		Member member = (Member)model.get("member");
+		if(mno != null) {
+			model.put("mem",dao.getMemberInfo(String.valueOf(mno)));
 			return "form/UpdateForm.jsp";
-		}else {
-			dao.updateMember((Member)model.get("member"));
+		}else if(member != null) {
+			dao.updateMember(member);
 			return "redirect:List.do";
 		}
+		return "redirect:List.do";
 	}
 	
 }

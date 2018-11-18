@@ -45,8 +45,7 @@ public class DispatcherServlet extends HttpServlet {
 			else if("/Update.do".equals(servletPath)) {
 				if(request.getParameter("fmno") != null) {
 					model.put("mno", request.getParameter("fmno"));	
-				}
-				if(request.getParameter("email") != null) {
+				}else if(request.getParameter("email") != null) {
 					model.put("member", new Member()
 							.setMno(Integer.parseInt(request.getParameter("mno")))
 							.setMname(request.getParameter("mname"))

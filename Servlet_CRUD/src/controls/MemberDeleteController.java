@@ -2,9 +2,11 @@ package controls;
 
 import java.util.Map;
 
+import bind.DataBinding;
 import dao.OracleMemberDao;
+import vo.Member;
 
-public class MemberDeleteController implements Controller {
+public class MemberDeleteController implements Controller,DataBinding {
 	OracleMemberDao dao;
 	
 	public MemberDeleteController setMemberDao(OracleMemberDao dao) {
@@ -12,8 +14,18 @@ public class MemberDeleteController implements Controller {
 		return this;
 	}
 	
+	public Object[] getDataBinders() {
+		return new Object[] {
+			"mno",Integer.class	
+		};
+	}
+	
 	public String execute(Map<String,Object> model)throws Exception {
-		dao.deleteMember(String.valueOf(model.get("mno")));
+		Integer mno = (Integer) model.get("mno");
+		if(mno != null) {
+			dao.deleteMember(String.valueOf(mno));
+		}
 		return "redirect:List.do";
 	}
+
 }
