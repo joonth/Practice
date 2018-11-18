@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bind.DataBinding;
 import controls.Controller;
 import controls.MemberAddController;
 import controls.MemberDeleteController;
@@ -31,43 +32,12 @@ public class DispatcherServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			HashMap<String,Object> model = new HashMap<>();
+			model.put("session",request.getSession());
+			
 			Controller pageController = (Controller) sc.getAttribute(servletPath);
 			
-			if("/Add.do".equals(servletPath)) {
-				if(request.getParameter("email") != null) {
-					model.put("member", new Member()
-							.setEmail(request.getParameter("email"))
-							.setPwd(request.getParameter("pwd"))
-							.setMname(request.getParameter("mname")));
-				}
-			}
-			
-			else if("/Update.do".equals(servletPath)) {
-				if(request.getParameter("fmno") != null) {
-					model.put("mno", request.getParameter("fmno"));	
-				}else if(request.getParameter("email") != null) {
-					model.put("member", new Member()
-							.setMno(Integer.parseInt(request.getParameter("mno")))
-							.setMname(request.getParameter("mname"))
-							.setEmail(request.getParameter("email")));
-				}
-			}
-			
-			
-			else if("/Delete.do".equals(servletPath)) {
-				model.put("mno", request.getParameter("mno"));
-			}
-			
-			else if("/Login.do".equals(servletPath)) {
-				if(request.getParameter("email") !=null) {
-					model.put("memberChk", new Member()
-							.setEmail(request.getParameter("email"))
-							.setPwd(request.getParameter("pwd")));
-				}
-			}
-			
-			else if("/Logout.do".equals(servletPath)) {
-				model.put("session", request.getSession());
+			if(pageController instanceof DataBinding) {
+				prepareRequestData(request,model,(DataBinding)pageController);
 			}
 			
 			String viewUrl = pageController.execute(model);
@@ -96,5 +66,19 @@ public class DispatcherServlet extends HttpServlet {
 			rd.forward(request, response);*/
 		}
 	}
-
+	
+	private void prepareRequestData(HttpServletRequest request, HashMap<String, Object> model, DataBinding dataBinding) throws Exception{
+		Object[] dataBinders = dataBinding.getDataBinders();
+		String dataName = null;
+		Class<?> dataType = null;
+		Object dataObj = null;
+		for(int i=0; i<dataBinders.length; i+=2) {
+			dataName = (String)dataBinders[i];
+			dataType = (Class<?>) dataBinders[i+1];
+			dataObj = ServletRequestDataBinder.bind(request,dataType,dataName);
+			model.put(dataName, dataObj);
+		}
+	}
+	
+	
 }
