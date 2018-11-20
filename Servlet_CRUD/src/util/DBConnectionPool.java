@@ -10,6 +10,11 @@ public class DBConnectionPool {
 	String password;
 	ArrayList<Connection> connList = new ArrayList<>();
 	
+	public DBConnectionPool() {
+	
+	}
+	
+	
 	public DBConnectionPool(String driver, String url, String username,String password)throws Exception{
 		this.url =url;
 		this.username = username;
