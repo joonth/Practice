@@ -2,6 +2,17 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>Servlet_CRUD</display-name>
   <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>/WEB-INF/application-context.properties</param-value>
+  </context-param>
+  
+  <resource-ref>
+  	<res-ref-name>jdbc/studydb</res-ref-name>
+  	<res-type>javax.sql.DataSource</res-type>
+  	<res-auth>Container</res-auth>
+  </resource-ref>
+  
+  <context-param>
     <param-name>driver</param-name>
     <param-value>oracle.jdbc.OracleDriver</param-value>
   </context-param>

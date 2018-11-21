@@ -14,12 +14,14 @@ import javax.servlet.http.HttpSession;
 
 import bind.DataBinding;
 import bind.ServletRequestDataBinder;
+import context.ApplicationContext;
 import controls.Controller;
 import controls.MemberAddController;
 import controls.MemberDeleteController;
 import controls.MemberListController;
 import controls.MemberLoginController;
 import controls.MemberUpdateController;
+import listeners.ContextListener;
 import vo.Member;
 
 
@@ -31,11 +33,14 @@ public class DispatcherServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String servletPath = request.getServletPath();
 		try {
-			ServletContext sc = this.getServletContext();
+			ApplicationContext ctx = ContextListener.getApplicationContext();
 			HashMap<String,Object> model = new HashMap<>();
 			model.put("session",request.getSession());
 			
-			Controller pageController = (Controller) sc.getAttribute(servletPath);
+			Controller pageController = (Controller) ctx.getBean(servletPath);
+			if(pageController == null) {
+				prepareRequestData(request,model,(DataBinding)pageController);
+			}
 			
 			if(pageController instanceof DataBinding) {
 				prepareRequestData(request,model,(DataBinding)pageController);

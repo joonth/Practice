@@ -7,15 +7,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
+
 import util.DBConnectionPool;
 import vo.Member;
 
 public class OracleMemberDao implements MemberDao {
 		
-	DBConnectionPool connPool;
+	DataSource ds;
 	
-	public void setDbConnectionPool (DBConnectionPool connPool) {
-		this.connPool = connPool;
+	public void setDataSource(DataSource ds) {
+		this.ds = ds;
 	}
 	
 	public Member login (Member mem)throws Exception {
@@ -23,7 +25,7 @@ public class OracleMemberDao implements MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			conn = connPool.getConnection();
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement("select mno, mname, email from members where email=? and pwd=?");
 			pstmt.setString(1, mem.getEmail());
 			pstmt.setString(2, mem.getPwd());
@@ -43,7 +45,7 @@ public class OracleMemberDao implements MemberDao {
 		}finally {
 			try {if(rs!=null) rs.close();}catch(Exception e) {}
 			try {if(pstmt!=null) pstmt.close();}catch(Exception e) {}
-			if(conn !=null) connPool.returnConnection(conn);
+			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
 	
@@ -52,7 +54,7 @@ public class OracleMemberDao implements MemberDao {
 		Statement stmt = null;
 		ResultSet rs =null;
 		try {
-			conn = connPool.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno,mname,email,cre_date from members order by mno asc");
 			List<Member> members = new ArrayList<>();
@@ -69,7 +71,7 @@ public class OracleMemberDao implements MemberDao {
 		}finally {
 			try {if(rs!=null) rs.close();}catch(Exception e) {}
 			try {if(stmt!=null) stmt.close();}catch(Exception e) {}
-			if(conn !=null) connPool.returnConnection(conn);
+			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
 	
@@ -79,7 +81,7 @@ public class OracleMemberDao implements MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			conn = connPool.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno from members order by mno desc");
 			rs.next();
@@ -97,7 +99,7 @@ public class OracleMemberDao implements MemberDao {
 			try {if(rs != null) rs.close();}catch(Exception e) {}
 			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
 			try {if(stmt != null) stmt.close();}catch(Exception e) {}
-			if(conn != null) connPool.returnConnection(conn);
+			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
 	
@@ -107,7 +109,7 @@ public class OracleMemberDao implements MemberDao {
 		ResultSet rs = null;
 		try {
 			System.out.println("######"+mno);
-			conn = connPool.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno,mname,email,cre_date from members where mno ="+mno);
 			rs.next();
@@ -122,7 +124,7 @@ public class OracleMemberDao implements MemberDao {
 		}finally {
 			try {if(rs !=null) rs.close();}catch(Exception e) {}
 			try {if(stmt !=null) stmt.close();}catch(Exception e) {}
-			if(conn != null) connPool.getConnection();
+			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
 	
@@ -131,7 +133,7 @@ public class OracleMemberDao implements MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			conn = connPool.getConnection();
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement("update members set mname =? ,email = ? ,mod_date=sysdate where mno=?");
 			pstmt.setString(1, mem.getMname());
 			pstmt.setString(2, mem.getEmail());
@@ -142,7 +144,7 @@ public class OracleMemberDao implements MemberDao {
 		}finally {
 			try {if(rs !=null) rs.close();}catch(Exception e) {}
 			try {if(pstmt !=null) pstmt.close();}catch(Exception e) {}
-			if(conn != null) connPool.returnConnection(conn);
+			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
 	
@@ -152,7 +154,7 @@ public class OracleMemberDao implements MemberDao {
 		Statement stmt1 = null;
 		ResultSet rs = null;
 		try {
-			conn = connPool.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.createStatement();
 			stmt.executeQuery("delete members where mno="+mno);
 			
@@ -164,7 +166,7 @@ public class OracleMemberDao implements MemberDao {
 			try {if(rs != null) rs.close();}catch(Exception e) {}
 			try {if(stmt1 != null) stmt1.close();}catch(Exception e) {}
 			try {if(stmt != null) stmt.close();}catch(Exception e) {}
-			if(conn!= null) connPool.returnConnection(conn);
+			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
 	}
 	
