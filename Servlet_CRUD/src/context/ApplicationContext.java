@@ -63,11 +63,12 @@ public class ApplicationContext {
 	
 	private Object findObjectByType(Class<?> type) {
 		for(Object obj : objTable.values()) {
-			System.out.println("!!!!"+obj);
 			if(type.isInstance(obj)) {
+				System.out.println("!!!!"+obj);
 				return obj;
 			}
 		}
+		System.out.println("!!!!return");
 		return null;
 	}
 }
