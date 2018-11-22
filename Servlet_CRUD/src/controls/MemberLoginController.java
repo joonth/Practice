@@ -2,10 +2,12 @@ package controls;
 
 import java.util.Map;
 
+import annotation.Component;
 import bind.DataBinding;
 import dao.OracleMemberDao;
 import vo.Member;
 
+@Component("/Login.do")
 public class MemberLoginController implements Controller,DataBinding {
 	OracleMemberDao dao;
 	

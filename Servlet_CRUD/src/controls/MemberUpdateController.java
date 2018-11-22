@@ -2,10 +2,12 @@ package controls;
 
 import java.util.Map;
 
+import annotation.Component;
 import bind.DataBinding;
 import dao.OracleMemberDao;
 import vo.Member;
 
+@Component("/Update.do")
 public class MemberUpdateController implements Controller, DataBinding {
 	OracleMemberDao dao;
 	

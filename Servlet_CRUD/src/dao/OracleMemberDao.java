@@ -9,9 +9,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import annotation.Component;
 import util.DBConnectionPool;
 import vo.Member;
 
+@Component("memberDao")
 public class OracleMemberDao implements MemberDao {
 		
 	DataSource ds;

@@ -2,8 +2,10 @@ package controls;
 
 import java.util.Map;
 
+import annotation.Component;
 import dao.OracleMemberDao;
 
+@Component("/List.do")
 public class MemberListController implements Controller {
 	OracleMemberDao dao;
 	
