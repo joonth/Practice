@@ -79,6 +79,7 @@ public class DispatcherServlet extends HttpServlet {
 		Class<?> dataType = null;
 		Object dataObj = null;
 		for(int i=0; i<dataBinders.length; i+=2) {
+			System.out.println(dataName);
 			dataName = (String)dataBinders[i];
 			dataType = (Class<?>) dataBinders[i+1];
 			dataObj = ServletRequestDataBinder.bind(request,dataType,dataName);

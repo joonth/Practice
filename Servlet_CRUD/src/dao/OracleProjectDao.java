@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,5 +52,38 @@ public class OracleProjectDao implements ProjectDao {
 			try {if(pstmt != null) pstmt.close();}catch(Exception e) {}
 			try {if(conn != null) conn.close();}catch(Exception e) {}
 		}
+	}
+
+	@Override
+	public int insert(Project project) throws Exception {
+		Connection conn =null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count =0;
+		try {
+			conn = ds.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select pno from projects order by pno desc");
+			rs.next();
+			int lastNum = rs.getInt("pno")+1;
+			pstmt = conn.prepareStatement("insert into projects values (?,?,?,0,?,?,?,sysdate)");
+			pstmt.setInt(1, lastNum);
+			pstmt.setString(2, project.getPname());
+			pstmt.setString(3, project.getContent());
+			pstmt.setString(4, project.getTags());
+			pstmt.setDate(5,project.getSta_date() );
+			pstmt.setDate(6, project.getEnd_date());
+			count = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {if(rs !=null) rs.close();}catch(Exception e) {}
+			try {if(pstmt !=null) pstmt.close();}catch(Exception e) {}
+			try {if(stmt !=null) stmt.close();}catch(Exception e) {}
+			try {if(conn !=null) conn.close();}catch(Exception e) {}
+		}
+		return count;
 	}
 }
