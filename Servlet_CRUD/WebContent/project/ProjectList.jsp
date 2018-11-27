@@ -18,7 +18,7 @@
 <body>
 	<jsp:include page="../Header.jsp"/>
   <h1>프로젝트 목록</h1>
-  <a href="#">신규 프로젝트</a>
+  <a href="pAdd.do">신규 프로젝트</a>
   <table>
     <tr>
       <th>번호</th>

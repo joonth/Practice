@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -72,8 +73,8 @@ public class OracleProjectDao implements ProjectDao {
 			pstmt.setString(2, project.getPname());
 			pstmt.setString(3, project.getContent());
 			pstmt.setString(4, project.getTags());
-			pstmt.setDate(5,project.getSta_date() );
-			pstmt.setDate(6, project.getEnd_date());
+			pstmt.setDate(5,(Date) project.getSta_date() );
+			pstmt.setDate(6, (Date) project.getEnd_date());
 			count = pstmt.executeUpdate();
 			
 		}catch(Exception e) {

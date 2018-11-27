@@ -9,7 +9,6 @@ import javax.servlet.ServletRequest;
 public class ServletRequestDataBinder {
 	public static Object bind(ServletRequest request, Class<?> dataType,String dataName)throws Exception{
 		if(isPrimitiveType(dataType)) {
-			System.out.println("############"+dataName);
 			return createValueObject(dataType,request.getParameter(dataName));
 		}
 		
