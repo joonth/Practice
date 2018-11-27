@@ -31,7 +31,7 @@
     <c:forEach var="project" items="${projects}">
       <tr>
         <td>${project.pno}</td>
-        <td><a href="#">${project.pname}</a></td>
+        <td><a href="pUpdate.do">${project.pname}</a></td>
         <td>${project.sta_date}</td>
         <td>${project.end_date}</td>
         <td>${project.state}</td>
