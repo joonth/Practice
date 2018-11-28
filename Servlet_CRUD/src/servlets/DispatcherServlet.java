@@ -82,7 +82,6 @@ public class DispatcherServlet extends HttpServlet {
 			dataName = (String)dataBinders[i];
 			dataType = (Class<?>) dataBinders[i+1];
 			dataObj = ServletRequestDataBinder.bind(request,dataType,dataName);
-			System.out.println("!!! " +dataName+" " + dataType+ " " + dataObj);
 			model.put(dataName, dataObj);
 		}
 	}

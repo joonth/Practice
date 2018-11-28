@@ -14,36 +14,37 @@
 <body>
 	<jsp:include page="../Header.jsp"/>
 	<h1>프로젝트 수정</h1>
-	<form action="pUpdate.do">
+	<form action="pUpdate.do" method="post">
+	<input type="hidden" name="pno" value="${project.getPno()}">
 	<ul>
 		<li>
-			<label>제목</label><input type="text" name="pname" value="${project.getPname()}" readonly/>		
+			<label>제목</label><input type="text" name="pname" value="${project.getPname()}"/>		
 		</li>
 	</ul>
 	<ul>
 		<li>
 			<label>내용</label>
-			<textarea rows="6" cols="40" name="content" value="${project.getContent()}" readonly ></textarea>	
+			<textarea id="ta" rows="6" cols="40" name="content" >${project.getContent()}</textarea>	
 		</li>
 	</ul>	
 	<ul>
 		<li>
-			<label>시작일</label><input type="text" name="sta_date" value="${project.getSta_date()}"  readonly>		
+			<label>시작일</label><input type="text" name="sta_date" value="${project.getSta_date()}" >		
 		</li>
 	</ul>
 	<ul>
 		<li>
-			<label>종료일</label><input type="text" name="end_date" value="${project.getEnd_date()}" readonly>		
+			<label>종료일</label><input type="text" name="end_date" value="${project.getEnd_date()}">		
 		</li>
 	</ul>
 	<ul>
 		<li>
-			<label>태그</label><input type="text" name="tags" value="${project.getTags()}" readonly >		
+			<label>태그</label><input type="text" name="tags" value="${project.getTags()}" >		
 		</li>
 	</ul>
 	
-	<input type="submit" value="추가">
-	<input type="reset" value="취소">
+	<input type="submit" value="수정">
+	<input type="button" value="취소" onclick="location.href='pList.do'">
 	</form>
 	<jsp:include page="../Tail.jsp"/>
 </body>

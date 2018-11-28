@@ -47,7 +47,6 @@ public class ApplicationContext {
 		for (Object item : props.keySet()) {
 			key = (String) item;
 			value = props.getProperty(key);
-			System.out.println("### " +key +" " +value);
 			if(key.startsWith("jndi.")) {
 				objTable.put(key, ctx.lookup(value));
 			}else {
@@ -59,7 +58,6 @@ public class ApplicationContext {
 	private void injectDependency() throws Exception{
 		for(String key : objTable.keySet()) {
 			if(!key.startsWith("jndi.")) {
-				System.out.println("$$ "+objTable.get(key));
 				callSetter(objTable.get(key));				
 			}
 		}
@@ -69,7 +67,6 @@ public class ApplicationContext {
 		Object dependency = null;
 		for(Method m: obj.getClass().getMethods()) {
 			if(m.getName().startsWith("set")) {
-				System.out.println("@@@@@"+m.getParameterTypes()[0]);
 				dependency = findObjectByType(m.getParameterTypes()[0]);
 				if(dependency != null) {
 					m.invoke(obj, dependency);
@@ -81,11 +78,9 @@ public class ApplicationContext {
 	private Object findObjectByType(Class<?> type) {
 		for(Object obj : objTable.values()) {
 			if(type.isInstance(obj)) {
-				System.out.println("!!!!"+obj);
 				return obj;
 			}
 		}
-		System.out.println("!!!!return");
 		return null;
 	}
 }
