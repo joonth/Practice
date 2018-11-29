@@ -35,7 +35,7 @@
         <td>${project.sta_date}</td>
         <td>${project.end_date}</td>
         <td>${project.state}</td>
-        <td><a href="#">[삭제]</a></td>
+        <td><a href="pDelete.do?pno=${project.pno}">[삭제]</a></td>
       </tr>
     </c:forEach>
 

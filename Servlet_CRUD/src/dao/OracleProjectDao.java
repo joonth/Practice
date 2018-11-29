@@ -143,4 +143,23 @@ public class OracleProjectDao implements ProjectDao {
 		}
 		return count;
 	}
+
+	@Override
+	public int delete(int pno) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement("delete projects where pno = ?");
+			pstmt.setInt(1, pno);
+			count = pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {if(pstmt !=null)pstmt.close();}catch(Exception e) {}
+			try {if(conn !=null)conn.close();}catch(Exception e) {}
+		}
+		return count;
+	}
 }
