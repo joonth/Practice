@@ -36,6 +36,7 @@ public class ApplicationContext {
 		String key = null;
 		for(Class<?> clazz : list) {
 			key = clazz.getAnnotation(Component.class).value();
+			System.out.println(key);
 			objTable.put(key, clazz.newInstance());
 		}
 	}
@@ -47,6 +48,7 @@ public class ApplicationContext {
 		for (Object item : props.keySet()) {
 			key = (String) item;
 			value = props.getProperty(key);
+			System.out.println(key+"," + value);
 			if(key.startsWith("jndi.")) {
 				objTable.put(key, ctx.lookup(value));
 			}else {

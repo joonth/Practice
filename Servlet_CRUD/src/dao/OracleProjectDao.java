@@ -34,7 +34,6 @@ public class OracleProjectDao implements ProjectDao {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				System.out.println(rs.getInt("pno")+","+rs.getString("pname")+","+rs.getDate("sta_date"));
 				list.add(new Project()
 						.setPno(rs.getInt("pno"))
 						.setPname(rs.getString("pname"))
@@ -43,7 +42,6 @@ public class OracleProjectDao implements ProjectDao {
 						.setState(rs.getInt("state"))
 				);
 			}
-			System.out.println(list.size());
 
 			return list;
 		}catch(Exception e) {

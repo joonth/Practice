@@ -6,7 +6,7 @@ import annotation.Component;
 import bind.DataBinding;
 import dao.OracleProjectDao;
 
-@Component("pDelete.do")
+@Component("/pDelete.do")
 public class ProjectDeleteController implements Controller, DataBinding {
 
 	OracleProjectDao dao;

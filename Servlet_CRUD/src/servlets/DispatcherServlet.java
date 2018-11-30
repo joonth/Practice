@@ -32,17 +32,21 @@ public class DispatcherServlet extends HttpServlet {
   
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String servletPath = request.getServletPath();
+		System.out.println(servletPath);
 		try {
 			ApplicationContext ctx = ContextListener.getApplicationContext();
 			HashMap<String,Object> model = new HashMap<>();
 			model.put("session",request.getSession());
 			
 			Controller pageController = (Controller) ctx.getBean(servletPath);
+			System.out.println(pageController);
 			if(pageController == null) {
+				System.out.println("bean");
 				prepareRequestData(request,model,(DataBinding)pageController);
 			}
 			
 			if(pageController instanceof DataBinding) {
+				System.out.println("instanceof");
 				prepareRequestData(request,model,(DataBinding)pageController);
 			}
 			
